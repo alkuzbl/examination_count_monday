@@ -1,27 +1,21 @@
 import React, {useState} from 'react';
 import './App.css';
 import {Count} from "./components/Count";
-import style from "./components/Count.module.scss";
+import {start} from "repl";
 
 function App() {
+    const maxValue = 5
+    const startValue = 0
     //стейт для окна счетчика
-    let [numberCount, setNumberCount] = useState<number>(0)
-    //стейт для блокировки кнопок и стилизации
-    let [error, setError] = useState<boolean>(false)
-    //добавляем +1 при нажатии на клавишу
+    const [numberCount, setNumberCount] = useState<number>(startValue)
     const onInk = () => {
         setNumberCount(numberCount + 1)
-        //блокируем/разблокируем кнопку при достижении нужного числа
-        if (numberCount === 4) setError(true)
     }
     //сброс счетчика и установка начальных значений
     const onReset = () => {
-        setNumberCount(0)
-        setError(false)
+        setNumberCount(startValue)
     }
-    // стили кнопок и окна счетчика
-    let styleReset = !error ? style.counter__btnReset : style.error
-    let styleWindow = !error ? style.counter__window : style.errorWin
+
 
     return (
         <div className="App">
@@ -29,9 +23,9 @@ function App() {
                 <Count numberCount={numberCount}
                        onInk={onInk}
                        onReset={onReset}
-                       styleWindow={styleWindow}
-                       error={error}
-                       styleReset={styleReset}
+                       maxValue={maxValue}
+                       startValue={startValue}
+
                 />
             </header>
         </div>

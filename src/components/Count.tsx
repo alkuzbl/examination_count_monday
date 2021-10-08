@@ -7,12 +7,21 @@ type CountPropsType = {
     numberCount: number
     onInk: () => void
     onReset: () => void
-    styleWindow: string
-    error: boolean
-    styleReset: string
+    startValue: number
+    maxValue: number
 }
 
-export const Count: React.FC<CountPropsType> = ({numberCount, onInk, onReset, styleWindow, error, styleReset}) => {
+export const Count: React.FC<CountPropsType> = ({numberCount,
+                                                    onInk,
+                                                    onReset,
+                                                    startValue,
+                                                    maxValue}) => {
+
+
+    const styleReset = numberCount !== maxValue ? style.counter__btnReset : style.error
+    const styleWindow = numberCount !== maxValue ? style.counter__window : style.errorWin
+    const disableOnInk = numberCount === maxValue
+    const disableReset = numberCount > maxValue || numberCount === startValue
 
     return (
         <div className={style.counter}>
@@ -23,11 +32,11 @@ export const Count: React.FC<CountPropsType> = ({numberCount, onInk, onReset, st
             <div className={style.counter__inner}>
                 <AlternativeSuperButton styleBtn={style.counter__btnInk}
                                         name={'Ink'}
-                                        disabled={error}
+                                        disabled={disableOnInk}
                                         callBack={onInk}/>
                 <AlternativeSuperButton styleBtn={styleReset}
                                         name={'Reset'}
-                                        disabled={numberCount > 0 && numberCount < 5 ? error : !error}
+                                        disabled={disableReset}
                                         callBack={onReset}/>
             </div>
         </div>

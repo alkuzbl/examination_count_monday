@@ -12,9 +12,7 @@ function App() {
     const onInk = () => {
         setNumberCount(numberCount + 1)
         //блокируем/разблокируем кнопку при достижении нужного числа
-        if (numberCount === 4) {
-            setError(true)
-        }
+        if (numberCount === 4) setError(true)
     }
     //сброс счетчика и установка начальных значений
     const onReset = () => {

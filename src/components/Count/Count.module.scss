@@ -1,0 +1,76 @@
+.counter{
+  background-color: #586b7b;
+  min-width: 400px;
+  min-height: 320px;
+  border-radius: 10px;
+  margin: 0 20px;
+  padding-top: 30px;
+  &__window{
+    min-height: 160px;
+    border: 1px solid #c4c4c4;
+    border-radius: 5px;
+    margin: 0 30px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #e2e2e2;
+    font-size: 22px;
+  }
+  &__windowCount{
+    font-size: 55px;
+  }
+
+  &__inner{
+    display: flex;
+    justify-content: center;
+  }
+  &__btnInk{
+    width: 140px;
+    height: 50px;
+    margin-right: 20px;
+    border-radius: 10px;
+
+  }
+  &__btnReset{
+    width: 140px;
+    height: 50px;
+    border-radius: 10px;
+  }
+}
+
+.errorWin{
+  font-size: 55px;
+  font-weight: bold;
+  color: red;
+}
+
+.setCounter{
+
+  &__windowsInner{
+    padding: 5px 10px;
+  }
+  &__windowsSpan{
+    margin-right: 10px;
+    font-size: 22px;
+  }
+  &__windowsInput{
+    max-width: 55px;
+    padding: 5px;
+  }
+  &__resetCounter{
+    font-size: 14px;
+    opacity: 0.5;
+    position: relative;
+    bottom: -20px;
+    right: -110px;
+  }
+}
+
+.errorInput{
+  max-width: 55px;
+  padding: 5px;
+  background-color: red;
+  border: 1px solid red;
+
+}

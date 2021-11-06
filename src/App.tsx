@@ -1,55 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
-import {Count} from "./components/Count/Count";
+
 import {SetCount} from "./components/SetCount/SetCount";
+import {RootStateType} from "./bll/store";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    changeMaxValueAC, changeStartValueAC, InitialStateType, onInkAC, resetCounterAC, setErrorAC, setInkStartAC
+} from "./bll/reducer-counter";
+import Count from "./components/Count/Count";
 
-
-
-
-
-
-/*
 function App() {
-    const [maxValue, setMaxValue] = useState<number>( Number(localStorage.getItem("maxValue")) | 0 )
-    const [startValue, setStartValue] = useState<number>(Number(localStorage.getItem("startValue")) | 0)
-    const [numberCount, setNumberCount] = useState<number>(Number(localStorage.getItem("count")) | 0)
-    const [disabledButton, setDisabledButton] = useState<boolean>(!Boolean(localStorage.getItem("disabled")))
-    const [errorWin, setErrorWin] = useState<string>('')
+    const {maxValue, startValue, disabledButton, error , numberCount} = useSelector<RootStateType, InitialStateType>(state => state.counter)
 
-    useEffect(()=>{localStorage.setItem("maxValue", JSON.stringify(maxValue))}, [maxValue])
-    useEffect(()=>{localStorage.setItem("startValue", JSON.stringify(startValue))}, [startValue])
-    useEffect(()=>{localStorage.setItem("count", JSON.stringify(startValue))}, [startValue])
-    useEffect(()=>{localStorage.setItem("count", JSON.stringify(numberCount))}, [numberCount])
-    useEffect(()=>{localStorage.setItem("disabled", JSON.stringify(disabledButton))}, [disabledButton])
+    const dispatch = useDispatch()
 
-/// Setting countering
+    const errorHandler = (maxValue: number, startValue: number)=>{
+        if (maxValue < 0 || startValue < 0) setError('Values incorrect!!! The value cannot be less than "0"')
+        else if (maxValue === startValue) setError('Values incorrect!!! The values cannot be equal')
+        else if (startValue > maxValue) setError('Values incorrect!!! The initial value cannot be greater than the final value')
+        else setError('Enter the values and press "Set"')
+    }
+
     const changeMaxValue = (value: number) => {
-        setMaxValue(value)
-        setDisabledButton(true)
+        dispatch(changeMaxValueAC(value))
+        errorHandler(value, startValue)
     }
+
     const changeStartValue = (value: number) => {
-        setStartValue(value)
-        setDisabledButton(true)
-    }
-    const setInkStart = () => {
-        setDisabledButton(false)
-        setNumberCount(startValue)
-
-    }
-/// Counter
-    const onInk = () => {
-        setNumberCount(numberCount + 1)
-    }
-    const onReset = () => {
-        setNumberCount(startValue)
+        dispatch(changeStartValueAC(value))
+        errorHandler(maxValue,value)
     }
 
-    useEffect(()=>{
-        if (maxValue < 0 || startValue < 0) setErrorWin('Values incorrect!!! The value cannot be less than "0"')
-        else if (maxValue === startValue) setErrorWin('Values incorrect!!! The values cannot be equal')
-        else if (startValue > maxValue) setErrorWin('Values incorrect!!! The initial value cannot be greater than the final value')
-        else setErrorWin('Enter the values and press "Set"')
-    },[maxValue,startValue])
+    const setInkStart = () => dispatch(setInkStartAC())
+
+    const onReset = () => dispatch(resetCounterAC())
+
+    const onInk = () => dispatch(onInkAC())
+
+    const setError = (errorValue: string) => dispatch(setErrorAC(errorValue))
+
+
 
     return (
         <div className="App">
@@ -61,11 +51,12 @@ function App() {
                           changeStartValue={changeStartValue}
                           disabledBtn={disabledButton}
                 />
+
                 <Count disabledBtn={disabledButton}
                        numberCount={numberCount}
                        onInk={onInk}
                        onReset={onReset}
-                       errorWindowContent={errorWin}
+                       errorValue={error}
                        maxValue={maxValue}
                        startValue={startValue}
                 />
@@ -75,74 +66,3 @@ function App() {
 }
 
 export default App;
-*/
-
-function App() {
-    const [maxValue, setMaxValue] = useState<number>( Number(localStorage.getItem("maxValue")) | 0 )
-    const [startValue, setStartValue] = useState<number>(Number(localStorage.getItem("startValue")) | 0)
-    const [numberCount, setNumberCount] = useState<number>(Number(localStorage.getItem("count")) | 0)
-    const [disabledButton, setDisabledButton] = useState<boolean>(Boolean(!localStorage.getItem("disabled")))
-    const [errorWin, setErrorWin] = useState<string>('')
-
-    useEffect(()=>{localStorage.setItem("maxValue", JSON.stringify(maxValue))}, [maxValue])
-    useEffect(()=>{localStorage.setItem("startValue", JSON.stringify(startValue))}, [startValue])
-    useEffect(()=>{localStorage.setItem("count", JSON.stringify(startValue))}, [startValue])
-    useEffect(()=>{localStorage.setItem("count", JSON.stringify(numberCount))}, [numberCount])
-    useEffect(()=>{localStorage.setItem("disabled", JSON.stringify(disabledButton))}, [disabledButton])
-
-/// Setting countering
-    const changeMaxValue = (value: number) => {
-        setMaxValue(value)
-        setDisabledButton(true)
-    }
-    const changeStartValue = (value: number) => {
-        setStartValue(value)
-        setDisabledButton(true)
-    }
-    const setInkStart = () => {
-        setDisabledButton(false)
-        setNumberCount(startValue)
-    }
-/// Counter
-    const onInk = () => {
-        setNumberCount(numberCount + 1)
-    }
-    const onReset = () => {
-        setNumberCount(startValue)
-    }
-
-    useEffect(()=>{
-        if (maxValue < 0 || startValue < 0) setErrorWin('Values incorrect!!! The value cannot be less than "0"')
-        else if (maxValue === startValue) setErrorWin('Values incorrect!!! The values cannot be equal')
-        else if (startValue > maxValue) setErrorWin('Values incorrect!!! The initial value cannot be greater than the final value')
-        else setErrorWin('Enter the values and press "Set"')
-    },[maxValue,startValue])
-
-    return (
-        <div className="App">
-            <header className="App-header">
-                <SetCount startValue={startValue}
-                          maxValue={maxValue}
-                          setInkStart={setInkStart}
-                          changeMaxValue={changeMaxValue}
-                          changeStartValue={changeStartValue}
-                          disabledBtn={disabledButton}
-                />
-                <Count disabledBtn={disabledButton}
-                       numberCount={numberCount}
-                       onInk={onInk}
-                       onReset={onReset}
-                       errorWindowContent={errorWin}
-                       maxValue={maxValue}
-                       startValue={startValue}
-                />
-            </header>
-        </div>
-    );
-}
-
-export default App;
-
-
-
-

@@ -8,29 +8,32 @@ type CountPropsType = {
     disabledBtn: boolean
     onInk: () => void
     onReset: () => void
-    errorWindowContent: string
+    errorValue: string
     maxValue: number
     startValue: number
+
 }
 
-export const Count: React.FC<CountPropsType> = ({
-                                                    disabledBtn,
-                                                    onReset,
-                                                    errorWindowContent,
-                                                    numberCount,
-                                                    onInk,
-                                                    maxValue,
-                                                    startValue
-                                                }) => {
+
+const Count = ({
+                   disabledBtn,
+                   onReset,
+                   errorValue,
+                   numberCount,
+                   onInk,
+                   maxValue,
+                   startValue
+               }: CountPropsType) => {
 //ErrorStyles
     const styleWindowCount = numberCount === maxValue ? style.errorWin : style.counter__windowCount
 
     return (
         <div className={style.counter}>
             {
-                disabledBtn ? <Window styleWindow={style.counter__window}
+                disabledBtn
+                    ? <Window styleWindow={style.counter__window}
                                       styleContent={''}
-                                      numberCount={errorWindowContent}/>
+                                      numberCount={errorValue}/>
                     : <Window styleWindow={style.counter__window}
                               styleContent={styleWindowCount}
                               numberCount={numberCount}/>
@@ -40,13 +43,15 @@ export const Count: React.FC<CountPropsType> = ({
             <div className={style.counter__inner}>
                 <AlternativeSuperButton styleBtn={style.counter__btnInk}
                                         name={'Ink'}
-                                        disabled={disabledBtn ? true : numberCount === maxValue}
+                                        disabled={!disabledBtn && numberCount === maxValue}
                                         callBack={onInk}/>
                 <AlternativeSuperButton styleBtn={style.counter__btnReset}
                                         name={'Reset'}
-                                        disabled={disabledBtn ? true : numberCount === startValue}
+                                        disabled={!disabledBtn && numberCount === startValue}
                                         callBack={onReset}/>
             </div>
         </div>
     )
 }
+
+export default Count
